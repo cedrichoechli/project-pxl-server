@@ -1,12 +1,18 @@
+// Import der nötigen Bibliotheken
+
 const fs = require('fs');
 const express = require('express');
 
 const { Publisher } = require('./services');
 const CommandManager = require('./controllers/command-manager');
 
+// Definition der nötigen Konstanten
+
 const configFile = fs.readFileSync('./config.json');
 const config = JSON.parse(configFile);
 const { address, port, plugins } = config;
+
+// Kontrolliert ob das jeweilige Plugin aktiviert ist und importiert es falls ja
 
 const pluginServices = [];
 Object.entries(plugins).forEach(([plugin, enabled]) => {
@@ -22,10 +28,14 @@ Object.entries(plugins).forEach(([plugin, enabled]) => {
   }
 });
 
+// Initialisiert den Pub/Sub-Service
+
 const publisher = new Publisher(config);
 const commandManager = new CommandManager(publisher);
 
 const app = express();
+
+// Initialisiert Plugins
 
 pluginServices.forEach(({ name, service }) => {
   const plugin = new service(publisher);
@@ -37,6 +47,8 @@ pluginServices.forEach(({ name, service }) => {
     plugin.fetch(req, res);
   });
 });
+
+// Definiert den String um denn Scrolling Text zu bedienen und die zu schickende Nachricht
 
 app.get('/message/:message/:duration/:speed/:red/:green/:blue', (req, res) => {
   const message = req.params.message;
@@ -58,6 +70,8 @@ app.get('/message/:message/:duration/:speed/:red/:green/:blue', (req, res) => {
   res.send(`${message}`);
 });
 
+// Definiert den String um die Bildanzeige zu bedienen und die zu schickende Nachricht
+
 app.get('/picture/:pictureFile/:duration', (req, res) => {
   const duration = req.params.duration;
   const pictureFile = req.params.pictureFile;
@@ -70,6 +84,8 @@ app.get('/picture/:pictureFile/:duration', (req, res) => {
   });
   res.send(`${pictureFile}`);
 });
+
+// Definiert den String um die Animationsanzeige zu bedienen und die zu schickende Nachricht
 
 app.get('/animation/:pictureFile/:duration', (req, res) => {
   const duration = req.params.duration;
@@ -84,6 +100,8 @@ app.get('/animation/:pictureFile/:duration', (req, res) => {
   res.send(`${pictureFile}`);
 });
 
+// Definiert den String um die Sync-Funktion zu bedienen und die zu schickende Nachricht
+
 app.get('/sync/:type/:pictureFile', (req, res) => {
   const type = req.params.duration;
   const pictureFile = req.params.pictureFile;
@@ -97,25 +115,35 @@ app.get('/sync/:type/:pictureFile', (req, res) => {
   res.send(`${pictureFile}`);
 });
 
+// Definiert den String um den Queue-Clear zu bedienen und die zu schickende Nachricht
+
 app.get('/clear', (req, res) => {
   commandManager.command('clear');
   res.send('Clear');
 });
+
+// Definiert den String um den Queue-Stop zu bedienen und die zu schickende Nachricht
 
 app.get('/stop', (req, res) => {
   commandManager.command('stop');
   res.send('Stop');
 });
 
+// Definiert den String um den Queue-Start zu bedienen und die zu schickende Nachricht
+
 app.get('/start', (req, res) => {
   commandManager.command('start');
   res.send('Start');
 });
 
+// Definiert den String um den Queue-End zu bedienen und die zu schickende Nachricht
+
 app.get('/end', (req, res) => {
   commandManager.command('end');
   res.send('End');
 });
+
+// Started den Server
 
 const server = app.listen(port, address, () => {
   const address = server.address();
