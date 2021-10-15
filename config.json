@@ -9,8 +9,6 @@
     "channel": "pxl"
   },
   "plugins": {
-    "weather": true,
-    "bustime": true,
-    "alphavantage": true
+    "weather": true
   }
 }
