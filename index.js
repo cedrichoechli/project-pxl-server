@@ -53,7 +53,7 @@ app.get('/message/:message/:duration/:speed/:red/:green/:blue', (req, res) => {
     red: req.param('red') || `${red}`,
     green: req.param('green') || `${green}`,
     blue: req.param('blue') || `${blue}`,
-    priority: req.param('message') || true,
+    priority: req.param('message') || false,
   });
   res.send(`${message}`);
 });
@@ -66,7 +66,7 @@ app.get('/picture/:pictureFile/:duration', (req, res) => {
     name: req.param('name') || 'picture',
     duration: req.param('duration') || `${duration}`,
     pictureFile: req.param('pictureFile') || `${pictureFile}`,
-    priority: req.param('message') || true,
+    priority: req.param('message') || false,
   });
   res.send(`${pictureFile}`);
 });
@@ -79,7 +79,7 @@ app.get('/animation/:pictureFile/:duration', (req, res) => {
     name: req.param('name') || 'animation',
     duration: req.param('duration') || `${duration}`,
     pictureFile: req.param('pictureFile') || `${pictureFile}`,
-    priority: req.param('message') || true,
+    priority: req.param('message') || false,
   });
   res.send(`${pictureFile}`);
 });
@@ -92,19 +92,9 @@ app.get('/sync/:type/:pictureFile', (req, res) => {
     name: req.param('name') || 'sync',
     type: req.param('type') || `${type}`,
     pictureFile: req.param('pictureFile') || `${pictureFile}`,
-    priority: req.param('message') || true,
+    priority: req.param('message') || false,
   });
   res.send(`${pictureFile}`);
-});
-
-app.get('/kill', (req, res) => {
-  publisher.publish('Kill running process', {
-    repeat: false,
-    name: 'kill',
-    duration: 1,
-    priority: true,
-  });
-  res.send('Kill running process');
 });
 
 app.get('/clear', (req, res) => {
