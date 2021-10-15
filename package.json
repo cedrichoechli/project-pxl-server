@@ -1,0 +1,18 @@
+{
+  "name": "project-pixel-server",
+  "version": "1.0.0",
+  "description": "The server side of the Project-pxl. Based on the cactuspi-client by Danny Lum under the ISC license.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cedric Hoechli",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mta-bustime": "^1.0.0",
+    "pubnub": "^4.27.6",
+    "request": "^2.88.2"
+  }
+}

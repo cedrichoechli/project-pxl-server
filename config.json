@@ -1,0 +1,16 @@
+{
+  "address": "localhost",
+  "port": 8081,
+  "pubsubType": "pubnub",
+  "pubnub": {
+    "subscribeKey": "",
+    "publishKey": "",
+    "secretKey": "",
+    "channel": "pxl"
+  },
+  "plugins": {
+    "weather": true,
+    "bustime": true,
+    "alphavantage": true
+  }
+}
