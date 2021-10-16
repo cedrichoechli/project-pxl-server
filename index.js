@@ -103,7 +103,7 @@ app.get('/animation/:pictureFile/:duration', (req, res) => {
 // Definiert den String um die Sync-Funktion zu bedienen und die zu schickende Nachricht
 
 app.get('/sync/:type/:pictureFile', (req, res) => {
-  const type = req.params.duration;
+  const type = req.params.type;
   const pictureFile = req.params.pictureFile;
   publisher.publish(`null`, {
     repeat: req.param('repeat') || false,
@@ -113,6 +113,21 @@ app.get('/sync/:type/:pictureFile', (req, res) => {
     priority: req.param('message') || false,
   });
   res.send(`${pictureFile}`);
+});
+
+// Definiert den String um die Loop-Funktion zu bedienen und die zu schickende Nachricht
+
+app.get('/loop/:type/:duration', (req, res) => {
+  const type = req.params.type;
+  const duration = req.params.duration;
+  publisher.publish(`null`, {
+    repeat: req.param('repeat') || false,
+    name: req.param('name') || 'loop',
+    type: req.param('type') || `${type}`,
+    duration: req.param('duration') || `${duration}`,
+    priority: req.param('message') || false,
+  });
+  res.send(`Loop`);
 });
 
 // Definiert den String um den Queue-Clear zu bedienen und die zu schickende Nachricht
@@ -141,6 +156,13 @@ app.get('/start', (req, res) => {
 app.get('/end', (req, res) => {
   commandManager.command('end');
   res.send('End');
+});
+
+// Definiert den String um den Kill-Command zu bedienen und die zu schickende Nachricht
+
+app.get('/kill', (req, res) => {
+  commandManager.command('kill');
+  res.send('Kill');
 });
 
 // Started den Server
